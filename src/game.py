@@ -1,3 +1,4 @@
+from player import Player
 from src.grid import Grid
 from src.player import Player
 from src import pickups
@@ -7,7 +8,8 @@ from src import pickups
 class GameState:
     """Samla spelets variabler i en klass."""
     def __init__(self):
-        self.player = Player(2, 1)
+        self.player = Player(17,6) # (Krav 1 - Spelaren "@" ska börja nära mitten): 17 - 6 är ungefär mitten av spelet.
+        #self.player = Player(2, 1)
         self.score = 0
         self.inventory = []
 
@@ -34,7 +36,30 @@ def start(state):
         command = input("Use WASD to move, Q/X to quit. ")
         command = command.casefold()[:1]
 
-        if command == "d" and state.player.can_move(1, 0, state.g):  # move right
+        # här finns hur varje bokstav ska röra sig
+        if command == "w":
+            move_player(state, dx=0, dy=-1)
+
+        elif command == "a":
+            move_player(state, dx=-1, dy=0)
+
+        elif command == "s":
+            move_player(state, dx=0, dy=1)
+
+        elif command == "d":
+            move_player(state, dx=1, dy=0)
+
+        elif command == "i": # Kommandot "i" som ska visa vad spelare har i inventory
+            print("Inventory:")
+
+            if len(state.inventory) == 0:
+                print("Empty Inventory")
+
+            else:
+                for item in state.inventory:
+                    print("-", item)
+
+        """if command == "d" and state.player.can_move(1, 0, state.g):  # move right
             # TODO: skapa funktioner, så vi inte behöver upprepa så mycket kod för riktningarna "W,A,S"
             maybe_item = state.g.get(state.player.pos_x + 1, state.player.pos_y)
             state.player.move(1, 0)
@@ -44,11 +69,23 @@ def start(state):
                 state.score += maybe_item.value
                 print(f"You found a {maybe_item.name}, +{maybe_item.value} points.")
                 #g.set(player.pos_x, player.pos_y, g.empty)
-                state.g.clear(state.player.pos_x, state.player.pos_y)
-
+                state.g.clear(state.player.pos_x, state.player.pos_y)"""
 
     # Hit kommer vi när while-loopen slutar
     print("Thank you for playing!")
+
+def move_player(state, dx, dy): # Funktionen ska möjliggöra spelaren röra sig med WASD
+    if state.player.can_move(dx, dy, state.g):
+        maybe_item = state.g.get(state.player.pos_x + dx, state.player.pos_y + dy)
+        state.player.move(dx,dy)
+        state.score -= 1 #Lava
+
+        if isinstance(maybe_item, pickups.Item):
+            state.score += maybe_item.value
+            state.inventory.append(maybe_item.name) #Lägg till i listan allt som vi plockar upp
+
+            print(f"You found a {maybe_item.name}, +{maybe_item.value} points.")
+            state.g.clear(state.player.pos_x, state.player.pos_y)
 
 
 # __name__ skapas av Python och sätts till "__main__" om man startar game.py
