@@ -38,7 +38,7 @@ Här kan du skriva vilka kriterier du har arbetat med.
 
 |Version 2|Status|
 |---------|------|
-|I        |      |
+|I        |  ✅  |
 |J        |      |
 |K        |      |
 |L        |      |
