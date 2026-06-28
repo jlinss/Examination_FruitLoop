@@ -50,6 +50,9 @@ def move_player(state, dx, dy): # Funktionen ska möjliggöra spelaren röra sig
             print(f"You found a {maybe_item.name}, +{maybe_item.value} points.")
             state.g.clear(state.player.pos_x, state.player.pos_y)
 
+        if isinstance(maybe_item, pickups.Trap):
+            state.score -= 10
+            print("You found a trap, -10 points.")
 
 # __name__ skapas av Python och sätts till "__main__" om man startar game.py
 # direkt. Detta är för att undvika att start-funktionen körs om man importerar

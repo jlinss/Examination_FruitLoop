@@ -23,3 +23,22 @@ def randomize(grid):
             if grid.is_empty(x, y):
                 grid.set(x, y, item)
                 break  # avbryt while-loopen, fortsätt med nästa varv i for-loopen
+
+# Här var lagt fällor till spelaren
+class Trap:
+    """Fällor som gör man förlora 10 poäng"""
+    def __init__(self):
+        self.symbol = "T"
+
+    def __str__(self):
+        return self.symbol
+
+def randomize_trap(grid):
+        for i in range(5):
+            while True:
+                x = grid.get_random_x()
+                y = grid.get_random_y()
+
+                if grid.is_empty(x,y):
+                    grid.set(x,y, Trap())
+                    break

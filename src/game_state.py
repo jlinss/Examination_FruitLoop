@@ -14,3 +14,4 @@ class GameState:
         self.g.set_player(self.player)
         self.g.make_walls()
         pickups.randomize(self.g)
+        pickups.randomize_trap(self.g)
